@@ -5,9 +5,7 @@ name: Build and Publish Docker Image
 #     needs: job1
 #   job3:
 #     needs: [job1, job2]
-on:
-  workflow_success:
-    workflow: Lint Go Code
+on: [push]
 
 jobs:
   build-and-publish:
