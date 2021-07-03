@@ -52,7 +52,10 @@ func (p *Person) ComparePassword(db *sqlx.DB) (Person, error) {
 	}
 	var person Person
 	for rows.Next() {
-		rows.StructScan(&person)
+		err = rows.StructScan(&person)
+		if err != nil {
+			println("err")
+		}
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(person.Password), []byte(p.Password))
