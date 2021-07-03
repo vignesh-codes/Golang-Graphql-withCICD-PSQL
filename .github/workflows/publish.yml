@@ -20,6 +20,6 @@ jobs:
         ## the name of our image
         name: vicky/go-appv1
         ## Here we pass in our Docker Username
-        username: 'vicky'
+        username: ${{ secrets.DOCKER_USERNAME }}
         ## and our Docker password which 
-        password: 'go-app'
+        password: ${{ secrets.DOCKER_PASSWORD }}
