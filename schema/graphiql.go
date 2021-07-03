@@ -2,6 +2,7 @@ package schema
 
 import (
 	"net/http"
+	"fmt"
 )
 
 var page = []byte(`
@@ -43,7 +44,10 @@ var page = []byte(`
 
 func GraphiQLHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Header().Set("Content-Type", "text/html")
-	rw.Write(page)
+	_, err := rw.Write(page)
+	if err!= nil {
+		fmt.Println("Error Setting up the Graphiql Page")
+	}
 }
 
 
