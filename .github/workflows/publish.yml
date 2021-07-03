@@ -18,7 +18,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         ## the name of our image
-        name: vicky/go-appv1
+        name: vickydeploys/go-appv1
         ## Here we pass in our Docker Username
         username: ${{ secrets.DOCKER_USERNAME }}
         ## and our Docker password which 
