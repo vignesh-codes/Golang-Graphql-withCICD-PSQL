@@ -93,4 +93,3 @@ func GetAllNew(username string, db *sqlx.DB) ([]Audio1, error) {
 
 }
 
-var new = "very wrong"
