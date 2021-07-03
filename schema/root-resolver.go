@@ -53,7 +53,7 @@ func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 	}
 	out, err := json.Marshal(audio)
 
-	fmt.Println(audio)
+	fmt.Println(audio, err)
 	return string(out), nil
 	
 }

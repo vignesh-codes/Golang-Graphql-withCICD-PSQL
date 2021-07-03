@@ -24,10 +24,3 @@ func (resolver *ViewerResolver) User(ctx context.Context, args struct {
 	result, err := personModel.GetByUsername(args.ID, db.GetConnection())
 	return personModel.PersonResolver{result}, err
 }
-
-
-
-// func (resolver *ViewerResolver) GetAllAudio(ctx context.Context) (personModel.AudioResolver, error) {
-// 	result, err := personModel.GetAll(db.GetConnection())
-// 	return personModel.AudioResolver{result}, err
-// }
