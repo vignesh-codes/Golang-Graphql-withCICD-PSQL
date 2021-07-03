@@ -1,4 +1,4 @@
-name: Your CICD Pipeline Name
+name: Starter
 on: [push]
 jobs:
   myjob:
