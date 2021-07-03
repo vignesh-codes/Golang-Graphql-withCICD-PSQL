@@ -1,0 +1,100 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  viewer(token: String!): Viewer
+  login(username: String!, password: String!): LoginHandler!
+  getbyid(id: Int!): Audio!
+  getall(limit: String!, offset: String!):String!
+  newgetall(limit: String!, offset: String!):[Audio1!]!
+
+}
+
+
+type Audio1 {
+  Id: String!
+  Title: String!
+  Description: String!
+  Category: String!
+  CreatorName: String!
+  CreatorEmail: String!
+}
+
+type Viewer {
+  user(id: ID!): Person!
+}
+type ResponseHandler {
+    Successmsg: String!
+    Errmsg: String!
+    StatusCode: String!
+}
+
+type AudioOut {
+  Id: String!
+  Title: String!
+  Description: String!
+  Category: String!
+  CreatorName: String!
+  CreatorEmail: String!
+}
+
+
+type Mutation {
+  upload(audio:AudioInput!):Audio!
+  update(id: Int!, audio:AudioInput!): Audio!
+  signup(person:PersonInput!): Person!
+  deletebyid(Token: String!, id: Int! ): DeleteHandler!
+  
+}
+type Person {
+  FirstName: String!
+  LastName: String!
+  EmailID: String!
+  Username: String!
+  Message: String!
+  Status: String!
+}
+
+input PersonInput {
+  FirstName: String!
+  LastName: String!
+  EmailID: String!
+  Username: String!
+  Password: String!
+}
+
+type DeleteHandler {
+    Message: String!
+    Status: String!
+}
+
+type LoginHandler {
+    Token: String!
+    Id: String!
+    Message: String!
+    Status: String!
+}
+
+type Audio {
+  Token: String!
+  Title: String!
+  Description: String!
+  Category: String!
+  CreatorName: String!
+  CreatorEmail: String!
+  CreatedBy: String!
+  Message: String!
+  Status: String!
+}
+
+input AudioInput {
+  Token: String!
+  Title: String!
+  Description: String!
+  Category: String!
+ 
+}
+
+
