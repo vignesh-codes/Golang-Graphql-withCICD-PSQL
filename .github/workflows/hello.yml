@@ -1,10 +1,9 @@
-name: Simple Job
-on: push
-
-
+name: Your CICD Pipeline Name
+on: [push]
 jobs:
-Hello:
-runs-on: ubuntu-18.04
-steps:
-- name: Hello World!
-run: echo "Hello World"
+  myjob:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, World!!
