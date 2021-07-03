@@ -1,5 +1,3 @@
-name: check-matrix
-
 on: [push]
 
 name: Test Across Matrix
