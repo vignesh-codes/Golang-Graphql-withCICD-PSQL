@@ -1,11 +1,17 @@
 name: Build and Publish Docker Image
-
+# jobs:
+#   job1:
+#   job2:
+#     needs: job1
+#   job3:
+#     needs: [job1, job2]
 on:
   workflow_success:
     workflow: Lint Go Code
 
 jobs:
   build-and-publish:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
     ## checks out our project source code
