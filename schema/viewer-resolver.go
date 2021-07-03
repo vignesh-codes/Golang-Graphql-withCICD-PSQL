@@ -10,14 +10,7 @@ type ViewerResolver struct {
 	viewer personModel.Person
 	
 }
-type AudioResolver struct {
-	aa []personModel.Audio1
-	
-}
-type NewResolver struct {
-	audio personModel.Audio
-	
-}
+
 func (resolver *ViewerResolver) User(ctx context.Context, args struct {
 	ID string
 }) (personModel.PersonResolver, error) {
