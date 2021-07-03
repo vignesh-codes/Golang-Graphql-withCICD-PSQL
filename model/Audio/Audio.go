@@ -21,7 +21,7 @@ func (a Audio) Save(db *sqlx.DB) (Audio, error) {
 	
 	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
 	fmt.Println(a.CreatorName, a.CreatorEmail)
-	_, err := tx.NamedExec("INSERT INTO audio (title, description, category, creatorname, creatoremail, createdby) VALUES (:title, :description, :category, :creatorname, :creatoremail, :createdby)", a)
+	_, err := tx.NamedExec("INSERT INTO audio (title, description, category, creatorname, creatoremail, createdby, destination) VALUES (:title, :description, :category, :creatorname, :creatoremail, :createdby, :destination)", a)
 	if err != nil {
 		return Audio{}, err
 	}
@@ -35,7 +35,7 @@ func (a Audio) Update(ID int32, user1 string, db *sqlx.DB) (Audio, error) {
 	
 	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
 	fmt.Println(a.CreatorName, a.CreatorEmail)
-	_, err := tx.Exec("UPDATE audio SET title=$1, description=$2, category=$3, creatorname=$4, creatoremail=$5 WHERE id=$6 and createdby=$7;", a.Title, a.Description, a.Category, a.CreatorName, a.CreatorEmail, ID, user1)
+	_, err := tx.Exec("UPDATE audio SET title=$1, description=$2, category=$3, creatorname=$4, creatoremail=$5, destination=$6 WHERE id=$7 and createdby=$8;", a.Title, a.Description, a.Category, a.CreatorName, a.CreatorEmail, a.Destination, ID, user1)
 	if err != nil {
 		return Audio{}, err
 	}
@@ -55,7 +55,7 @@ func (a Audio) GetByID(ID int32, db *sqlx.DB) (Audio, error) {
 	var item Audio
 	row := db.QueryRowx("SELECT * FROM audio WHERE id=$1", ID)
 
-	err := row.Scan(&item.Token, &item.Title,  &item.Description, &item.Category, &item.CreatorName, &item.CreatorEmail, &item.CreatedBy )
+	err := row.Scan(&item.Token, &item.Title,  &item.Description, &item.Category, &item.CreatorName, &item.CreatorEmail, &item.CreatedBy, &item.Destination )
 	if err != nil {
 		return Audio{}, err
 	}

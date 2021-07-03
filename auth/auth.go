@@ -29,7 +29,7 @@ func ValidateToken(tokenString string) (personModel.Person, error) {
 	})
 
 	if err != nil {
-		return personModel.Person{}, err
+		return personModel.Person{}, errors.New("Error getting User Data")
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
@@ -38,6 +38,7 @@ func ValidateToken(tokenString string) (personModel.Person, error) {
 		userData, err := json.Marshal(claims["data"])
 		if err!=nil{
 			fmt.Println(err)
+			return personModel.Person{}, errors.New("Error getting User Data")
 		}
 		fmt.Println("json:", string(userData), "ITS TYPE IS %T", userData)
 		err = json.Unmarshal(userData, &c1)
@@ -46,6 +47,8 @@ func ValidateToken(tokenString string) (personModel.Person, error) {
 			// if error is not nil
 			// print error
 			fmt.Println(err)
+			return personModel.Person{}, errors.New("Error getting User Data")
+
 		}
 		fmt.Println("HELLOW LOO HERE, ", c1.Username)
 		person, _ := claims["data"].(personModel.Person)
@@ -78,16 +81,17 @@ func ValidateToken1(tokenString string) (UserDetails, error) {
 		userData, err := json.Marshal(claims["data"])
 		if err!=nil{
 			fmt.Println(err)
+			return c1, errors.New("Error Getting the User Data")
 		}
 		// fmt.Println("json:", string(userData), "ITS TYPE IS %T", userData)
 		err = json.Unmarshal(userData, &c1)
 		if err != nil {
-  
 			// if error is not nil
 			// print error
 			fmt.Println(err)
+			return c1, errors.New("Error Getting the User Data")
 		}
-		fmt.Println("HELLOW LOO HERE, ", c1.Username)
+		// fmt.Println("HELLOW LOO HERE, ", c1.Username)
 		
 		return c1, nil
 	}

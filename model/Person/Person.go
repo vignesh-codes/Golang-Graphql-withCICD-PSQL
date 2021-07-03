@@ -68,7 +68,7 @@ func (p *Person) ComparePassword(db *sqlx.DB) (Person, error) {
 func GetByUsername(username string, db *sqlx.DB) (Person, error) {
 	var user Person
 
-	row := db.QueryRowx("SELECT * FROM audio WHERE id=1", username)
+	row := db.QueryRowx("SELECT * FROM users WHERE  username=$1", username)
 
 	err := row.StructScan(&user)
 	if err != nil {

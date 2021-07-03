@@ -42,7 +42,7 @@ type AudioOut {
 
 
 type Mutation {
-  upload(audio:AudioInput!):Audio!
+  create(audio:AudioInput!):Audio!
   update(id: Int!, audio:AudioInput!): Audio!
   signup(person:PersonInput!): Person!
   deletebyid(Token: String!, id: Int! ): DeleteHandler!
@@ -85,6 +85,7 @@ type Audio {
   CreatorName: String!
   CreatorEmail: String!
   CreatedBy: String!
+  Destination: String!
   Message: String!
   Status: String!
 }

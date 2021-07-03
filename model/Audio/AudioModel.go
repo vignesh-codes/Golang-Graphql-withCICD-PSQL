@@ -10,6 +10,7 @@ type Audio struct {
 	CreatorName  string `db:"creatorname"`
 	CreatorEmail  string `db:"creatoremail"`
 	CreatedBy string `db:"createdby"`
+	Destination string `db:"destination"`
 	Message string
 	Status string
 }
@@ -25,6 +26,8 @@ type Audio1 struct {
 	CreatorName  string 
 	CreatorEmail  string 
 	CreatedBy string
+	Destination string
+	
 }
 
 

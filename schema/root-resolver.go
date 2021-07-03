@@ -35,7 +35,7 @@ func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 	db := db.GetConnection()
 	
 	// var item1 interface{}
-	var audio []personModel.Audio1
+	var audio []audioModel.Audio1
 	limit := args.Limit
 	offset := args.Offset
 	fmt.Println(limit, offset)
@@ -44,12 +44,12 @@ func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 			fmt.Println(err)
 		}
 	for row.Next(){
-		var p personModel.Audio1
-		err := row.Scan(&p.Id, &p.Title, &p.Description, &p.Category, &p.CreatorName, &p.CreatorEmail)
+		var a audioModel.Audio1
+		err := row.Scan(&a.Id, &a.Title, &a.Description, &a.Category, &a.CreatorName, &a.CreatorEmail, &a.CreatedBy, &a.Destination)
 		if err != nil {
 			fmt.Println(err)
 		}
-		audio = append(audio, p)
+		audio = append(audio, a)
 	}
 	out, err := json.Marshal(audio)
 
@@ -121,7 +121,7 @@ func (resolver *RootResolver) Login(ctx context.Context, args struct {
 	personData, err := user.ComparePassword(db)
 	fmt.Println(personData)
 	if err != nil {
-		login.Message = "SOMETHING WRONG"
+		login.Message = "Incorrect Passwrod"
 		login.Status = "400"
 		return personModel.LoginResolver{login}
 	}
@@ -135,12 +135,12 @@ func (resolver *RootResolver) Login(ctx context.Context, args struct {
 
 	tokenString, err := token.SignedString(config.GetJWTSecret())
 	if err != nil {
-		login.Message = "SOMETHING WRONG"
+		login.Message = "Token Expired - Incorrect Token"
 		login.Status = "400"
 		return personModel.LoginResolver{login}
 	}
 	login.Token = tokenString
-	login.Message = "Success Login"
+	login.Message = "Login Success"
 	login.Status = "200"
 	return personModel.LoginResolver{login}
 
@@ -164,14 +164,14 @@ func (resolver *RootResolver) Signup(ctx context.Context, args struct {
 	err := user.Validate()
 	if err != nil {
 		fmt.Println(err)
-		user.Message = "SOMETHING WRONG"
+		user.Message = "Validation Error - Make sure Username, Password, FirstName is >8 char"
 		user.Status = "400"
 		return personModel.PersonResolver{user}
 	}
 	savedPerson, err := user.Save(db)
 	if err != nil {
 		fmt.Println(err)
-		user.Message = "SOMETHING WRONG"
+		user.Message = "Username Already Exist. Try Other"
 		user.Status = "400"
 		return personModel.PersonResolver{user}
 	}
@@ -184,7 +184,7 @@ func (resolver *RootResolver) Signup(ctx context.Context, args struct {
 
 
 
-func (resolver *RootResolver) Upload(ctx context.Context, args struct {
+func (resolver *RootResolver) Create(ctx context.Context, args struct {
 	Audio audioModel.AudioInput
 	// Person audioModel.PersonInput
 }) (audioModel.AudioResolver, error) {
@@ -197,8 +197,9 @@ func (resolver *RootResolver) Upload(ctx context.Context, args struct {
 		return audioModel.AudioResolver{Audio: audio}, nil
 	}
 	fmt.Println("u1:", user1)
+	// handle storing in S3 of the uploaded audio file
 	
-	
+	//
 	fmt.Println("user is: ",user1)
 	audio = audioModel.Audio{
 		Title:  args.Audio.Title,
@@ -207,13 +208,17 @@ func (resolver *RootResolver) Upload(ctx context.Context, args struct {
 		CreatorName: user1.FirstName,
 		CreatorEmail:  user1.EmailID,
 		CreatedBy: user1.Username,
+		Destination: "s3SampleURL",
 	}
 	fmt.Println(audio.Title, audio.Description)
 	
 	fmt.Println(user1)
 	
 	savedAudio, err := audio.Save(db)
-	if err != nil {
+	savedAudio.Message = "Success"
+	savedAudio.Status = "201"
+ 	if err != nil {
+		 fmt.Println(err)
 		savedAudio.Message = "Error"
 		savedAudio.Status = "400"
 		return audioModel.AudioResolver{Audio: savedAudio}, nil
@@ -238,12 +243,19 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 		return audioModel.AudioResolver{Audio: audio}, nil
 	}
 	fmt.Println(user1)
+	// When the uploaded audio file has to be replaced, the following logic will be performed
+	// Delete the file stored in s3 using the url derived from the input
+	// Upload the new file and store the url of the new file to the updated schema
+
+
+	//
 	audio = audioModel.Audio{
 		Title:  args.Audio.Title,
 		Description:  args.Audio.Description,
 		Category:   args.Audio.Category,
 		CreatorName: args.Audio.CreatorName,
 		CreatorEmail:  args.Audio.CreatorEmail,
+		Destination: "sampleUpdatedS3URL",
 	}
 	
 	savedAudio, err := audio.Update(args.ID, user1.Username, db)
@@ -251,7 +263,7 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 	savedAudio.Status = "201"
  	if err != nil {
 		 fmt.Println(err)
-		savedAudio.Message = "Error"
+		savedAudio.Message = "Error Updating the Audio"
 		savedAudio.Status = "400"
 		return audioModel.AudioResolver{Audio: savedAudio}, nil
 	}
@@ -272,7 +284,7 @@ func (resolver *RootResolver) Getbyid(ctx context.Context, args struct{ ID int32
 	}
 	fmt.Println("HEREHERE", item.Token)
 	if (derivedAudio.Token == ""){
-		fmt.Println("FALSEEEEEEEEEEE")
+		
 		derivedAudio.Message = "NOT FOUND"
 		derivedAudio.Status = "400"
 		return audioModel.AudioResolver{Audio: derivedAudio}, nil
@@ -301,11 +313,12 @@ func (resolver *RootResolver) Deletebyid(ctx context.Context, args struct{
 		return audioModel.DeleteResolver{DeleteHandler: info}
 	}
 	fmt.Println(args.ID, db)
-	
+	//Delete the file in the s3 storage after deleting the row in the DB
+	// This happens only after certain conditions map in the DB
 	deleteRow, err := audio.DeleteByID(args.ID, user1.Username, db)
 	if err != nil {
 		fmt.Println(err)
-		info.Message = "Error"
+		info.Message = "Error Deleting the Audio"
 		info.Status = "400"
 		return audioModel.DeleteResolver{DeleteHandler: info}
 	}
@@ -313,5 +326,4 @@ func (resolver *RootResolver) Deletebyid(ctx context.Context, args struct{
 	info.Message = "Success"
 	info.Status = "201"
 	return audioModel.DeleteResolver{DeleteHandler: info}
-	
 }

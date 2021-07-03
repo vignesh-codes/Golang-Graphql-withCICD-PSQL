@@ -55,6 +55,10 @@ func (a AudioResolver) Status() string {
 	return a.Audio.Status
 }
 
+func (a AudioResolver) Destination() string {
+	return a.Audio.Destination
+}
+
 
 
 func (a1 Audio1Resolver) Title() string {
@@ -79,6 +83,13 @@ func (a1 Audio1Resolver) Category() string {
 func (a1 Audio1Resolver) Id() string {
 	return a1.Audio1.Id
 }
+func (a1 Audio1Resolver) Destination() string {
+	return a1.Audio1.Destination
+}
+func (a1 Audio1Resolver) CreatedBy() string {
+	return a1.Audio1.CreatedBy
+}
+
 
 func (d DeleteResolver) Message() string {
 	return d.DeleteHandler.Message
