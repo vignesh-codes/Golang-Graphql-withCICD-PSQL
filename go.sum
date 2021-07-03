@@ -38,8 +38,12 @@ github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0U
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/hashicorp/golang-lru v0.5.0 h1:CL2msUPvZTLb5O648aiLNJw3hnBxN2+1Jq8rCOH9wdo=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
+github.com/ichtrojan/thoth v1.3.0 h1:PSlZ1s+2a9cpWHagN/W9D9rKVjUckIYcivegVHvO1Lk=
+github.com/ichtrojan/thoth v1.3.0/go.mod h1:jJvV8QN032F7fJPcKi+k9EuEn0sOJadJRFPHiivM1vc=
 github.com/jmoiron/sqlx v0.0.0-20180124204410-05cef0741ade h1:ryslCsfLTV4Cm/9NXqCJirlbYodWqFiTH454IaSn/fY=
 github.com/jmoiron/sqlx v0.0.0-20180124204410-05cef0741ade/go.mod h1:IiEW3SEiiErVyFdH8NTuWjSifiEQKUoyK3LNqr2kCHU=
+github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
+github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
 github.com/jrkt/graphql-go-upload v0.1.0 h1:Hb/hpTalk+F1/ukh5N3bW/N5vS0IjvmPR0XOyQc3cVI=
 github.com/jrkt/graphql-go-upload v0.1.0/go.mod h1:Xsdx+4V5aNwDk25v2rfXJSWslvyKm3GZ5/+apllV1ho=
 github.com/json-iterator/go v1.1.9 h1:9yzud/Ht36ygwatGx56VwCZtlI/2AD15T1X2sjSuGns=

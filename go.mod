@@ -8,7 +8,9 @@ require (
 	github.com/dgrijalva/jwt-go v3.1.0+incompatible
 	github.com/gin-gonic/gin v1.7.2 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
+	github.com/ichtrojan/thoth v1.3.0 // indirect
 	github.com/jmoiron/sqlx v0.0.0-20180124204410-05cef0741ade
+	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/jrkt/graphql-go-upload v0.1.0 // indirect
 	github.com/lib/pq v1.10.2
 	github.com/neelance/graphql-go v0.0.0-20180130204728-b46637030579
