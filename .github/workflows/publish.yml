@@ -1,6 +1,8 @@
 name: Build and Publish Docker Image
 
-on: [push]
+on:
+  workflow_success:
+    workflow: Lint Go Code
 
 jobs:
   build-and-publish:
