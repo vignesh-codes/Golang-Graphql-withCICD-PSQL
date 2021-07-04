@@ -61,55 +61,6 @@ func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 }
 
 
-
-// func (resolver *RootResolver) Newgetall(ctx context.Context, args struct{
-// 	Limit string
-// 	Offset string}) ([]personModel.Audio1Resolver){
-// 	db := db.GetConnection()
-	
-// 	// var item1 interface{}
-// 	var audio []interface{}
-// 	// outy := make([]personModel.Audio1,0,50)
-// 	limit := args.Limit
-// 	offset := args.Offset
-// 	fmt.Println(limit, offset)
-// 	row, err := db.Query("SELECT * FROM audio LIMIT $1 OFFSET $2;", limit, offset)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 		}
-// 	for row.Next(){
-// 		var p personModel.Audio1
-// 		err := row.Scan(&p.Id, &p.Title, &p.Description, &p.Category, &p.CreatorName, &p.CreatorEmail)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 		}
-// 		fmt.Println(p)
-// 		audio = append(audio, p)
-// 	}
-// 	// out, err := json.Marshal(audio)
-// 	// if err != nil{
-// 	// 	fmt.Println("ERROR")
-// 	// }
-// 	fmt.Println("1 Audio", audio)
-// 	newout, err := json.Marshal(audio)
-// 	if err != nil{
-// 		fmt.Println("ERROR", newout)
-// 	}
-// 	tob, err := json.Marshal(audio)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	var mapping []personModel.Audio1
-// 	if err := json.Unmarshal(tob, &mapping);err != nil {
-// 			fmt.Println("ERROR")
-// 		}
-// 	fmt.Println("mapping", mapping)
-	
-// 	return []personModel.Audio1Resolver{}
-	
-// }
-
-
 // To login and get the access token
 func (resolver *RootResolver) Login(ctx context.Context, args struct {
 	Username string
@@ -123,6 +74,7 @@ func (resolver *RootResolver) Login(ctx context.Context, args struct {
 	personData, err := user.ComparePassword(db)
 	fmt.Println(personData)
 	if err != nil {
+		fmt.Println(err)
 		login.Message = "Incorrect Passwrod"
 		login.Status = "400"
 		return personModel.LoginResolver{login}
@@ -262,6 +214,7 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 		CreatorName: args.Audio.CreatorName,
 		CreatorEmail:  user1.EmailID,
 		Destination: "sampleUpdatedS3URL",
+		CreatedBy: user1.Username,
 	}
 	
 	//save the updated audio only if the username is the owener of the audio content

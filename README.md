@@ -66,7 +66,7 @@ mutation {
     Status
     FirstName
     LastName
-    EmailId
+    EmailID
     Username
   }
 }
@@ -89,7 +89,7 @@ To Create a new Audio Information:
 mutation {
 	create(audio: {Token:  "jwttoken",
 		Title:  "abcd123",
-		Description:   "a@a.com",
+		Description:   "A Cool Podcast",
 		Category: "ASD",
 		})
   {
@@ -98,7 +98,7 @@ mutation {
     Status
     Message
     CreatorName
-	CreatorEmail
+	  CreatorEmail
     Destination
     CreatedBy
   }
@@ -110,8 +110,9 @@ mutation {
   
 	update(id: 46, audio: {Token:  "jwttoken",
 		Title:  "abcd1",
-		Description:   "a@a.com",
+		Description:   "A cooler podcost v2.0",
 		Category: "changed",
+    CreatorName: "ChangedName"
 		})
   {
     Status
@@ -119,7 +120,7 @@ mutation {
     Title
     Description
     CreatorName
-	CreatorEmail
+	  CreatorEmail
     Destination
     CreatedBy
   }
@@ -153,8 +154,6 @@ query {
 	viewer(token:"yourtoken",		
   ){
     user(id:"yourusername") {
-      Status,
-      Message,
       FirstName,
       LastName,
       Username

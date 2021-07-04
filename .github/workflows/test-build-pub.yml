@@ -2,7 +2,8 @@ name: Test, Build and Publish
 
 on: [push]
   
-
+#Lint -> Build and Publish
+#disabled govet test in lint to prevent errors related to composite literals - (open issue on github to solve without much changes in code)
 jobs:
   lint:
     runs-on: ubuntu-18.04
@@ -27,15 +28,15 @@ jobs:
     ## checks out our project source code
     - uses: actions/checkout@v2
     
-    ## Builds our docker image!
+    ## Builds our docker image
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-    ## Publishes our image to Docker Hub 😎
+    ## Publishes our image to Docker Hub 
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        ## the name of our image
+        ## the name of our image -> Make sure to change it to your dockerhub username
         name: vickydeploys/go-appv1
         ## Here we pass in our Docker Username
         username: ${{ secrets.DOCKER_USERNAME }}

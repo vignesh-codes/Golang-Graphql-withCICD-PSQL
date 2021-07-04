@@ -8,7 +8,6 @@ type Query {
   login(username: String!, password: String!): LoginHandler!
   getbyid(id: Int!): Audio!
   getall(limit: String!, offset: String!):String!
-  newgetall(limit: String!, offset: String!):[Audio1!]!
 
 }
 

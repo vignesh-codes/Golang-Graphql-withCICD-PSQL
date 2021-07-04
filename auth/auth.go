@@ -19,12 +19,10 @@ type UserDetails struct {
 func ValidateToken(tokenString string) (personModel.Person, error) {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return config.GetJWTSecret(), nil
 	})
 
@@ -34,13 +32,12 @@ func ValidateToken(tokenString string) (personModel.Person, error) {
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		var c1 UserDetails
-		fmt.Println("CLAIMEDTOKEN", claims["data"])
+		fmt.Println("CLAIMED TOKEN", claims["data"])
 		userData, err := json.Marshal(claims["data"])
 		if err!=nil{
 			fmt.Println(err)
 			return personModel.Person{}, errors.New("Error getting User Data")
 		}
-		fmt.Println("json:", string(userData), "ITS TYPE IS %T", userData)
 		err = json.Unmarshal(userData, &c1)
 		if err != nil {
   
@@ -59,6 +56,7 @@ func ValidateToken(tokenString string) (personModel.Person, error) {
 
 }
 
+//to return with the id. Can be merged with the above function to make it as one
 func ValidateToken1(tokenString string) (UserDetails, error) {
 	var c1 UserDetails
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -66,8 +64,6 @@ func ValidateToken1(tokenString string) (UserDetails, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return config.GetJWTSecret(), nil
 	})
 
@@ -83,7 +79,6 @@ func ValidateToken1(tokenString string) (UserDetails, error) {
 			fmt.Println(err)
 			return c1, errors.New("Error Getting the User Data")
 		}
-		// fmt.Println("json:", string(userData), "ITS TYPE IS %T", userData)
 		err = json.Unmarshal(userData, &c1)
 		if err != nil {
 			// if error is not nil
@@ -91,7 +86,6 @@ func ValidateToken1(tokenString string) (UserDetails, error) {
 			fmt.Println(err)
 			return c1, errors.New("Error Getting the User Data")
 		}
-		// fmt.Println("HELLOW LOO HERE, ", c1.Username)
 		
 		return c1, nil
 	}

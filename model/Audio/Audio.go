@@ -20,12 +20,12 @@ import (
 func (a Audio) Save(db *sqlx.DB) (Audio, error) {
 	tx := db.MustBegin()
 	
-	fmt.Println(a.CreatorName, a.CreatorEmail)
+	
 	_, err := tx.NamedExec("INSERT INTO audio (title, description, category, creatorname, creatoremail, createdby, destination) VALUES (:title, :description, :category, :creatorname, :creatoremail, :createdby, :destination)", a)
 	if err != nil {
 		return Audio{}, err
 	}
-	fmt.Println(a.CreatorName, a.CreatorEmail)
+	
 	err = tx.Commit()
 	return a, err
 }
@@ -34,12 +34,12 @@ func (a Audio) Save(db *sqlx.DB) (Audio, error) {
 func (a Audio) Update(ID int32, user1 string, db *sqlx.DB) (Audio, error) {
 	tx := db.MustBegin()
 	
-	fmt.Println(a.CreatorName, a.CreatorEmail)
+	
 	_, err := tx.Exec("UPDATE audio SET title=$1, description=$2, category=$3, creatorname=$4, creatoremail=$5, destination=$6 WHERE id=$7 and createdby=$8;", a.Title, a.Description, a.Category, a.CreatorName, a.CreatorEmail, a.Destination, ID, user1)
 	if err != nil {
 		return Audio{}, err
 	}
-	fmt.Println(a.CreatorName, a.CreatorEmail)
+	
 	err = tx.Commit()
 	return a, err
 }
@@ -69,7 +69,7 @@ func (a Audio1) DeleteByID(ID int32, username string, db *sqlx.DB) (Audio1, erro
 	if err != nil {
 		return Audio1{}, err
 	}
-	fmt.Println(row)
+	
 	return audio, nil
 }
 
