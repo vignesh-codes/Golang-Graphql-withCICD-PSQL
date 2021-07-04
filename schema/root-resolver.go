@@ -200,7 +200,7 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 		audio.Status = "401"
 		return audioModel.AudioResolver{Audio: audio}, nil
 	}
-	fmt.Println(user1)
+	// fmt.Println(user1)
 	// When the uploaded audio file has to be replaced, the following logic will be performed
 	// Delete the file stored in s3 using the url derived from the input
 	// Upload the new file and store the url of the new file to the updated schema
