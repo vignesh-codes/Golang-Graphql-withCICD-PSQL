@@ -1,7 +1,10 @@
 package personModel
+//Handling all PERSON related controls here -> interacting with DB
+
+
 
 import (
-	"fmt"
+	
 
 	"github.com/jmoiron/sqlx"
 
@@ -16,13 +19,13 @@ import (
 
 
 
-
+//validate the given input
 func (p Person) Validate() error {
 	return validation.ValidateStruct(&p,
-		validation.Field(&p.FirstName, validation.Required, validation.Length(2, 50)),
-		validation.Field(&p.LastName, validation.Required, validation.Length(2, 50)),
+		validation.Field(&p.FirstName, validation.Required, validation.Length(1, 50)),
+		validation.Field(&p.LastName, validation.Required, validation.Length(1, 50)),
 		validation.Field(&p.EmailID, validation.Required, is.Email),
-		validation.Field(&p.Username, validation.Required, validation.Length(5, 50), is.Alphanumeric))
+		validation.Field(&p.Username, validation.Required, validation.Length(3, 50), is.Alphanumeric))
 }
 
 
@@ -34,7 +37,6 @@ func (p Person) Save(db *sqlx.DB) (Person, error) {
 		return Person{}, err
 	}
 	p.Password = string(hash)
-	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
 	_, err = tx.NamedExec("INSERT INTO users (first_name, last_name, email, username, password) VALUES (:first_name, :last_name, :email, :username, :password)", p)
 	if err != nil {
 		return Person{}, err
@@ -65,6 +67,7 @@ func (p *Person) ComparePassword(db *sqlx.DB) (Person, error) {
 	return person, err
 }
 
+
 func GetByUsername(username string, db *sqlx.DB) (Person, error) {
 	var user Person
 
@@ -80,16 +83,4 @@ func GetByUsername(username string, db *sqlx.DB) (Person, error) {
 
 
 
-func GetAllNew(username string, db *sqlx.DB) ([]Audio1, error) {
-	var audio []Audio1
-
-	row := db.QueryRowx("SELECT * FROM audio")
-
-	err := row.StructScan(&audio)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return audio, nil
-
-}
 

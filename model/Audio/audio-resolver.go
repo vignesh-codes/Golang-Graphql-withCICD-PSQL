@@ -1,5 +1,6 @@
 //nolint:unparam
 package audioModel
+//Resolvers take care of the response fields for graphql schema
 
 
 

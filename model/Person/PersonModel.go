@@ -13,11 +13,13 @@ type Person struct {
 	Status string
 }
 
+// Generic Response struct -> not used for now
 type Response struct {
 	Successmsg string
 	Errmsg string
 	Statuscode string
 }
+
 type Audio struct {
 	Token string
 	Title string `db:"title"`
@@ -28,6 +30,7 @@ type Audio struct {
 	Message string
 	Status string
 }
+
 
 type DeleteHandler struct {
 	Message string
@@ -42,14 +45,6 @@ type LoginHandler struct {
 }
 
 
-type Audio1 struct {
-	Id string
-	Title string 
-	Description  string 
-	Category  string 
-	CreatorName  string 
-	CreatorEmail  string 
-}
 
 type PersonInput struct {
 	FirstName string
@@ -59,12 +54,4 @@ type PersonInput struct {
 	Username  string
 }
 
-type AudioInput struct {
-	Token string
-	Title string
-	Description  string
-	Category  string
-	CreatorName  string
-	CreatorEmail  string
-}
 

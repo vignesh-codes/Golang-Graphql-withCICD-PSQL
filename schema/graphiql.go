@@ -42,6 +42,7 @@ var page = []byte(`
 	</html>
 	`)
 
+//graphiql for frontend
 func GraphiQLHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Header().Set("Content-Type", "text/html")
 	_, err := rw.Write(page)

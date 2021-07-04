@@ -15,8 +15,10 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
+//RootResolver -> Has the methods to handle the operations defined in schema.grapql
 type RootResolver struct{}
 
+//To view the users info based ont he given token after login
 func (resolver *RootResolver) Viewer(ctx context.Context, args struct{ Token string }) (*ViewerResolver, error) {
 	user, err := auth.ValidateToken(args.Token)
 	if err != nil {
@@ -28,7 +30,7 @@ func (resolver *RootResolver) Viewer(ctx context.Context, args struct{ Token str
 }
 
 
-
+//To get the list of audios from the db with pagination
 func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 	Limit string
 	Offset string}) (string, error){
@@ -60,55 +62,55 @@ func (resolver *RootResolver) Getall(ctx context.Context, args struct{
 
 
 
-func (resolver *RootResolver) Newgetall(ctx context.Context, args struct{
-	Limit string
-	Offset string}) ([]personModel.Audio1Resolver){
-	db := db.GetConnection()
+// func (resolver *RootResolver) Newgetall(ctx context.Context, args struct{
+// 	Limit string
+// 	Offset string}) ([]personModel.Audio1Resolver){
+// 	db := db.GetConnection()
 	
-	// var item1 interface{}
-	var audio []interface{}
-	// outy := make([]personModel.Audio1,0,50)
-	limit := args.Limit
-	offset := args.Offset
-	fmt.Println(limit, offset)
-	row, err := db.Query("SELECT * FROM audio LIMIT $1 OFFSET $2;", limit, offset)
-		if err != nil {
-			fmt.Println(err)
-		}
-	for row.Next(){
-		var p personModel.Audio1
-		err := row.Scan(&p.Id, &p.Title, &p.Description, &p.Category, &p.CreatorName, &p.CreatorEmail)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(p)
-		audio = append(audio, p)
-	}
-	// out, err := json.Marshal(audio)
-	// if err != nil{
-	// 	fmt.Println("ERROR")
-	// }
-	fmt.Println("1 Audio", audio)
-	newout, err := json.Marshal(audio)
-	if err != nil{
-		fmt.Println("ERROR", newout)
-	}
-	tob, err := json.Marshal(audio)
-	if err != nil {
-		fmt.Println(err)
-	}
-	var mapping []personModel.Audio1
-	if err := json.Unmarshal(tob, &mapping);err != nil {
-			fmt.Println("ERROR")
-		}
-	fmt.Println("mapping", mapping)
+// 	// var item1 interface{}
+// 	var audio []interface{}
+// 	// outy := make([]personModel.Audio1,0,50)
+// 	limit := args.Limit
+// 	offset := args.Offset
+// 	fmt.Println(limit, offset)
+// 	row, err := db.Query("SELECT * FROM audio LIMIT $1 OFFSET $2;", limit, offset)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 	for row.Next(){
+// 		var p personModel.Audio1
+// 		err := row.Scan(&p.Id, &p.Title, &p.Description, &p.Category, &p.CreatorName, &p.CreatorEmail)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 		fmt.Println(p)
+// 		audio = append(audio, p)
+// 	}
+// 	// out, err := json.Marshal(audio)
+// 	// if err != nil{
+// 	// 	fmt.Println("ERROR")
+// 	// }
+// 	fmt.Println("1 Audio", audio)
+// 	newout, err := json.Marshal(audio)
+// 	if err != nil{
+// 		fmt.Println("ERROR", newout)
+// 	}
+// 	tob, err := json.Marshal(audio)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	var mapping []personModel.Audio1
+// 	if err := json.Unmarshal(tob, &mapping);err != nil {
+// 			fmt.Println("ERROR")
+// 		}
+// 	fmt.Println("mapping", mapping)
 	
-	return []personModel.Audio1Resolver{}
+// 	return []personModel.Audio1Resolver{}
 	
-}
+// }
 
 
-
+// To login and get the access token
 func (resolver *RootResolver) Login(ctx context.Context, args struct {
 	Username string
 	Password string
@@ -146,6 +148,8 @@ func (resolver *RootResolver) Login(ctx context.Context, args struct {
 
 }
 
+
+//To signup -> create a new person
 func (resolver *RootResolver) Signup(ctx context.Context, args struct {
 	Person personModel.PersonInput
 }) (personModel.PersonResolver) {
@@ -164,8 +168,8 @@ func (resolver *RootResolver) Signup(ctx context.Context, args struct {
 	err := user.Validate()
 	if err != nil {
 		fmt.Println(err)
-		user.Message = "Validation Error - Make sure Username, Password, FirstName is >8 char"
-		user.Status = "400"
+		user.Message = "Validation Error - Make sure Username, Password, FirstName is >2 and <50 char"
+		user.Status = "422"
 		return personModel.PersonResolver{user}
 	}
 	savedPerson, err := user.Save(db)
@@ -183,23 +187,24 @@ func (resolver *RootResolver) Signup(ctx context.Context, args struct {
 }
 
 
-
+// To create a new audio row in DB -> can create only after loogin in (with access token for now)
 func (resolver *RootResolver) Create(ctx context.Context, args struct {
 	Audio audioModel.AudioInput
 	// Person audioModel.PersonInput
 }) (audioModel.AudioResolver, error) {
 	var audio audioModel.Audio
 	db := db.GetConnection()
+	//validate the token and get info about user to put in audio row
 	user1, err := auth.ValidateToken1(args.Audio.Token)
 	if err != nil {
-		audio.Message = "Error Wrong token"
-		audio.Status = "400"
+		audio.Message = "Unathorized - Access Token Not Valid"
+		audio.Status = "401"
 		return audioModel.AudioResolver{Audio: audio}, nil
 	}
 	fmt.Println("u1:", user1)
 	// handle storing in S3 of the uploaded audio file
 	
-	//
+	
 	fmt.Println("user is: ",user1)
 	audio = audioModel.Audio{
 		Title:  args.Audio.Title,
@@ -228,6 +233,7 @@ func (resolver *RootResolver) Create(ctx context.Context, args struct {
 }
 
 
+// To update the audio info in DB (with access token only)
 func (resolver *RootResolver) Update(ctx context.Context, args struct {
 	ID int32
 	Audio audioModel.AudioInput
@@ -238,8 +244,8 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 	user1, err := auth.ValidateToken1(args.Audio.Token)
 	
 	if err != nil {
-		audio.Message = "Error Wrong token"
-		audio.Status = "400"
+		audio.Message = "Unathorized - Access Token Not Valid"
+		audio.Status = "401"
 		return audioModel.AudioResolver{Audio: audio}, nil
 	}
 	fmt.Println(user1)
@@ -248,16 +254,17 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 	// Upload the new file and store the url of the new file to the updated schema
 
 
-	//
+	
 	audio = audioModel.Audio{
 		Title:  args.Audio.Title,
 		Description:  args.Audio.Description,
 		Category:   args.Audio.Category,
 		CreatorName: args.Audio.CreatorName,
-		CreatorEmail:  args.Audio.CreatorEmail,
+		CreatorEmail:  user1.EmailID,
 		Destination: "sampleUpdatedS3URL",
 	}
 	
+	//save the updated audio only if the username is the owener of the audio content
 	savedAudio, err := audio.Update(args.ID, user1.Username, db)
 	savedAudio.Message = "Success"
 	savedAudio.Status = "201"
@@ -271,6 +278,7 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 	
 }
 
+//To get info of a specific audio based on the Audio ID given 
 func (resolver *RootResolver) Getbyid(ctx context.Context, args struct{ ID int32}) (audioModel.AudioResolver, error){
 	db := db.GetConnection()
 	var audio audioModel.Audio
@@ -282,7 +290,8 @@ func (resolver *RootResolver) Getbyid(ctx context.Context, args struct{ ID int32
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("HEREHERE", item.Token)
+	fmt.Println("Id is: ", item.Token)
+	//derivedAudio.Token = Id of the audio-> if empty means no row with this id is found. using .token just to match the schema without creating new one
 	if (derivedAudio.Token == ""){
 		
 		derivedAudio.Message = "NOT FOUND"
@@ -297,6 +306,7 @@ func (resolver *RootResolver) Getbyid(ctx context.Context, args struct{ ID int32
 	
 }
 
+// To delete a audio (happens only for signed in users (with access token))
 func (resolver *RootResolver) Deletebyid(ctx context.Context, args struct{ 
 	ID int32
 	Token string
@@ -308,8 +318,8 @@ func (resolver *RootResolver) Deletebyid(ctx context.Context, args struct{
 	user1, err := auth.ValidateToken1(args.Token)
 	
 	if err != nil {
-		info.Message = "Error Wrong token"
-		info.Status = "400"
+		info.Message = "Unathorized - Access Token Not Valid"
+		info.Status = "401"
 		return audioModel.DeleteResolver{DeleteHandler: info}
 	}
 	fmt.Println(args.ID, db)

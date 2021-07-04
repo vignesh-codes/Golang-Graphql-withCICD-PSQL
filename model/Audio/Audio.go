@@ -1,4 +1,5 @@
 package audioModel
+//Handling all AUDIO related controls here -> interacting with DB
 
 import (
 	"fmt"
@@ -15,11 +16,10 @@ import (
 
 
 
-
+//save the audio to db
 func (a Audio) Save(db *sqlx.DB) (Audio, error) {
 	tx := db.MustBegin()
 	
-	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
 	fmt.Println(a.CreatorName, a.CreatorEmail)
 	_, err := tx.NamedExec("INSERT INTO audio (title, description, category, creatorname, creatoremail, createdby, destination) VALUES (:title, :description, :category, :creatorname, :creatoremail, :createdby, :destination)", a)
 	if err != nil {
@@ -30,10 +30,10 @@ func (a Audio) Save(db *sqlx.DB) (Audio, error) {
 	return a, err
 }
 
+//Update the audio to DB only if the given creator username matches
 func (a Audio) Update(ID int32, user1 string, db *sqlx.DB) (Audio, error) {
 	tx := db.MustBegin()
 	
-	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
 	fmt.Println(a.CreatorName, a.CreatorEmail)
 	_, err := tx.Exec("UPDATE audio SET title=$1, description=$2, category=$3, creatorname=$4, creatoremail=$5, destination=$6 WHERE id=$7 and createdby=$8;", a.Title, a.Description, a.Category, a.CreatorName, a.CreatorEmail, a.Destination, ID, user1)
 	if err != nil {
@@ -43,14 +43,11 @@ func (a Audio) Update(ID int32, user1 string, db *sqlx.DB) (Audio, error) {
 	err = tx.Commit()
 	return a, err
 }
-// Save the person object to DB
-
-
-// ComparePassword :Compares person password
 
 
 
 
+//get audio by id
 func (a Audio) GetByID(ID int32, db *sqlx.DB) (Audio, error) {
 	var item Audio
 	row := db.QueryRowx("SELECT * FROM audio WHERE id=$1", ID)
@@ -63,7 +60,7 @@ func (a Audio) GetByID(ID int32, db *sqlx.DB) (Audio, error) {
 	
 }
 
-
+//Delete audio by id happens only if the username matches the given id. Otherwise it means not the owner triyng to delete
 func (a Audio1) DeleteByID(ID int32, username string, db *sqlx.DB) (Audio1, error) {
 	var audio Audio1
 
@@ -76,6 +73,7 @@ func (a Audio1) DeleteByID(ID int32, username string, db *sqlx.DB) (Audio1, erro
 	return audio, nil
 }
 
+//Get all audio
 func GetAllNew(username string, db *sqlx.DB) ([]Audio1, error) {
 	var audio []Audio1
 

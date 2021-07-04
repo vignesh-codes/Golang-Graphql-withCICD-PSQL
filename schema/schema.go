@@ -12,6 +12,7 @@ var (
 	Schema    string
 )
 
+//initialize loading of schema
 func init() {
 	fmt.Println(rawSchema)
 	path, _ := filepath.Abs("./schema/schema.graphql")

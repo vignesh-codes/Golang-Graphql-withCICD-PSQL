@@ -17,7 +17,7 @@ type Audio struct {
 
 
 
-
+//Defined a new struct to add ID field
 type Audio1 struct {
 	Id string
 	Title string 
@@ -31,7 +31,7 @@ type Audio1 struct {
 }
 
 
-
+//struct to take the input for creating audio
 type AudioInput struct {
 	Token string
 	Title string
