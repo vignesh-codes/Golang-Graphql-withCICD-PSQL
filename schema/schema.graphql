@@ -11,6 +11,13 @@ type Query {
 
 }
 
+type Mutation {
+  create(audio:AudioInput!):Audio!
+  update(id: Int!, audio:AudioInput!): Audio!
+  signup(person:PersonInput!): Person!
+  deletebyid(Token: String!, id: Int! ): DeleteHandler!
+  
+}
 
 type Audio1 {
   Id: String!
@@ -39,14 +46,6 @@ type AudioOut {
   CreatorEmail: String!
 }
 
-
-type Mutation {
-  create(audio:AudioInput!):Audio!
-  update(id: Int!, audio:AudioInput!): Audio!
-  signup(person:PersonInput!): Person!
-  deletebyid(Token: String!, id: Int! ): DeleteHandler!
-  
-}
 type Person {
   FirstName: String!
   LastName: String!

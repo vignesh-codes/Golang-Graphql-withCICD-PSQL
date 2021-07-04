@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	jwt "github.com/dgrijalva/jwt-go"
 )
+//can be moved to person model dir
 type UserDetails struct {
 	EmailID string
 	FirstName string

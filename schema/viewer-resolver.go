@@ -11,6 +11,7 @@ type ViewerResolver struct {
 	
 }
 
+//to map the derived details from validatetoken method to personModel
 func (resolver *ViewerResolver) User(ctx context.Context, args struct {
 	ID string
 }) (personModel.PersonResolver, error) {

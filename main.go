@@ -42,7 +42,7 @@ func main() {
 	http.Handle("/api", &relay.Handler{Schema: parsedSchema})
 	http.HandleFunc("/graphiql", schema.GraphiQLHandler)
 	
-	
+	//connect to port
 	err = http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Println("Cannot Listen to the port 8000")
