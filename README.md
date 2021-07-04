@@ -56,7 +56,7 @@ Go to  http://localhost:8000/graphiql for graphiql playground
 To Create a New User/Person: 
 ```
 mutation {
-	signup(person: {Username:  "newUser",
+	signup(person: {Username:  "AUser1",
 		Password:  "abcd123",
 		EmailID:   "a@a.com",
 		FirstName: "NewMan",
@@ -74,7 +74,7 @@ mutation {
 To Login:
 ```
 query {
-	login(username:  "newUser",
+	login(username:  "AUser1",
 		password:  "abcd123",
 		)
 		{
@@ -112,7 +112,7 @@ mutation {
 		Title:  "abcd1",
 		Description:   "A cooler podcost v2.0",
 		Category: "changed",
-    CreatorName: "ChangedName"
+    
 		})
   {
     Status
@@ -138,6 +138,7 @@ query {
     Destination
     CreatedBy
     CreatorName
+    CreatorEmail
   }
 }
 ```
@@ -174,3 +175,4 @@ mutation {
 ```
 
 
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IkZpcnN0TmFtZSI6Ik5ld01hbiIsIkxhc3ROYW1lIjoiTmFtZWxlc3MiLCJFbWFpbElEIjoiYUBhLmNvbSIsIlVzZXJuYW1lIjoibmV3VXNlciIsIlBhc3N3b3JkIjoiJDJhJDEwJGo2U0dYUHM0akE0UGFDdzhGMWtZR09TRGJIdGxTYVZpTUJ0VS5JeDhZeTlTc1hxdFRjZVBTIiwiTWVzc2FnZSI6IiIsIlN0YXR1cyI6IiJ9LCJleHAiOjE2MjU1OTI3OTQsImlvdCI6MTYyNTQxOTk5NCwiaXNzIjoiR29sYW5nLUdyYXBocWwtd2l0aENJQ0QtUFNRTCJ9.mXWufawaM0oFMrFOQFRwezVr5xXA0fC9UKpjXwCTl0I"

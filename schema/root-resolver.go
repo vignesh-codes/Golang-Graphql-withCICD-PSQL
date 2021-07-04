@@ -211,7 +211,7 @@ func (resolver *RootResolver) Update(ctx context.Context, args struct {
 		Title:  args.Audio.Title,
 		Description:  args.Audio.Description,
 		Category:   args.Audio.Category,
-		CreatorName: args.Audio.CreatorName,
+		CreatorName: user1.FirstName,
 		CreatorEmail:  user1.EmailID,
 		Destination: "sampleUpdatedS3URL",
 		CreatedBy: user1.Username,
