@@ -21,8 +21,6 @@
 
 ## Installation
 The project requires postgresql to be installed and running in the machine
-
-
 ```sh
 Git clone https://github.com/vignesh-codes/Golang-Graphql-withCICD-PSQL
 cd Golang-Graphql-withCICD-PSQL
